@@ -6,6 +6,7 @@ namespace MiniSocialMediaAPI.DTOs.Group
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public List<UserDTO> Users { get; set; } = [];
+        public List<string> UserIds { get; set; } = [];
+        public int MaxMembers { get; set; }
     }
 }

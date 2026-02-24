@@ -9,9 +9,11 @@ namespace MiniSocialMediaAPI.Utils
     {
         public AutoMapperProfile()
         {
-            CreateMap<User, UserDTO>();
+            CreateMap<User, UserDTO>().ForMember(
+                dest => dest.GroupIds, opt => opt.MapFrom(src => src.Groups.Select(g => g.Id)));
 
-            CreateMap<Group, GroupDTO>();
+            CreateMap<Group, GroupDTO>().ForMember(
+                dest => dest.UserIds, opt => opt.MapFrom(src => src.Users.Select(u => u.Id)));
             CreateMap<AddGroupDTO, Group>();
         }
     }

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniSocialMediaAPI.Data;
 using MiniSocialMediaAPI.DTOs.Group;
 using MiniSocialMediaAPI.Entities;
+using MiniSocialMediaAPI.Services;
 using System.Text.RegularExpressions;
 
 namespace MiniSocialMediaAPI.Controllers
@@ -16,11 +18,13 @@ namespace MiniSocialMediaAPI.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly IUserService userService;
 
-        public GroupController(ApplicationDbContext context, IMapper mapper)
+        public GroupController(ApplicationDbContext context, IMapper mapper, IUserService userService )
         {
             this.context = context;
             this.mapper = mapper;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -33,7 +37,7 @@ namespace MiniSocialMediaAPI.Controllers
         [HttpGet("{id:int}", Name ="GetGroup")]
         public async Task<ActionResult<GroupDTO>> Get(int id)
         {
-            var group = await context.Groups.FirstOrDefaultAsync(x => x.Id == id);
+            var group = await context.Groups.Include(u => u.Users).FirstOrDefaultAsync(x => x.Id == id);
             if (group is null)
             {
                 return NotFoundMessage();
@@ -59,6 +63,33 @@ namespace MiniSocialMediaAPI.Controllers
 
             return CreatedAtRoute("GetGroup", new { id = group.Id }, groupDTO);
 
+        }
+
+        /**
+         * POST -> Join Group
+         * 
+         */
+        [HttpPost("{groupId}/join")]
+        public async Task<ActionResult> JoinGroup(int groupId)
+        {
+            var user = await userService.GetUser();
+
+            if (user is null)
+            {
+                return Unauthorized();
+            }
+
+            var group = await context.Groups.FirstOrDefaultAsync(x => x.Id == groupId);
+
+            if (group is null)
+            {
+                return NotFoundMessage();
+            }
+
+            group.Users.Add(user);
+            await context.SaveChangesAsync();
+
+            return Ok("Te has unido al grupo");
         }
 
         /**

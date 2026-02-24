@@ -35,7 +35,7 @@ namespace MiniSocialMediaAPI.Controllers
         [Authorize(Policy ="admin")]
         public async Task<IEnumerable<UserDTO>> Get()
         {
-            var users = await userManager.Users.ToListAsync();
+            var users = await userManager.Users.Include(g => g.Groups).ToListAsync();
             var usersDTO = (mapper.Map<IEnumerable<UserDTO>>(users));
             return usersDTO;
         }
