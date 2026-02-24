@@ -68,6 +68,19 @@ namespace MiniSocialMediaAPI.Controllers
             else return BadRequest();
         }
 
+        [HttpPost("admin")]
+        public async Task<ActionResult> AddAmdmin(EditClaimDTO claimDTO)
+        {
+            var user = await userManager.FindByEmailAsync(claimDTO.Email);
+            if (user is null)
+            {
+                return BadRequest();
+            }
+
+            await userManager.AddClaimAsync(user, new Claim("admin", "true"));
+            return NoContent();
+        }
+
         private async Task<AuthResponseDTO> BuildToken(UserCredentialsDTO userCredentials)
         {
             var claims = new List<Claim>
