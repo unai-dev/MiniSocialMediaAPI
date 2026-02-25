@@ -92,6 +92,29 @@ namespace MiniSocialMediaAPI.Controllers
             return Ok("Te has unido al grupo");
         }
 
+        [HttpPost("{groupId}/remove")]
+        public async Task<ActionResult> RemoveUserGroup(int groupId)
+        {
+            var user = await userService.GetUser();
+
+            if (user is null)
+            {
+                return Unauthorized();
+            }
+
+            var group = await context.Groups.FirstOrDefaultAsync(x => x.Id == groupId);
+
+            if (group is null)
+            {
+                return NotFoundMessage();
+            }
+
+            group.Users.Remove(user);
+            await context.SaveChangesAsync();
+
+            return Ok($"{user.UserName} eliminado con exito");
+        }
+
         /**
          * TODO -> agregar metodo PUT o PATCH
          * PUT -> obligamos a indicar cada campo
