@@ -12,6 +12,8 @@ namespace MiniSocialMediaAPI.Data
         }
 
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Post> Posts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

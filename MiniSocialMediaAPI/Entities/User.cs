@@ -6,5 +6,6 @@ namespace MiniSocialMediaAPI.Entities
     {
         public DateTime Birthdate { get; set; }
         public List<Group> Groups { get; set; } = [];
+        public List<Post> Posts { get; set; } = [];
     }
 }

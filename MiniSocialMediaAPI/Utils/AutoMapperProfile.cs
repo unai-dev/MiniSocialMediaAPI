@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MiniSocialMediaAPI.DTOs.Group;
+using MiniSocialMediaAPI.DTOs.Post;
 using MiniSocialMediaAPI.DTOs.User;
 using MiniSocialMediaAPI.Entities;
 
@@ -16,6 +17,9 @@ namespace MiniSocialMediaAPI.Utils
             CreateMap<Group, GroupDTO>().ForMember(
                 dest => dest.UserIds, opt => opt.MapFrom(src => src.Users.Select(u => u.Id)));
             CreateMap<AddGroupDTO, Group>();
+
+            CreateMap<Post, PostDTO>();
+            CreateMap<AddPostDTO, Post>();
         }
     }
 }
