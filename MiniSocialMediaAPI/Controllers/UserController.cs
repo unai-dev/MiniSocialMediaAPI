@@ -51,5 +51,32 @@ namespace MiniSocialMediaAPI.Controllers
 
             return Ok(userDTO);
         }
+
+        [HttpPut("update")]
+        public async Task<ActionResult> Update(UpdateUserDTO updateUserDTO)
+        {
+            var user = await userService.GetUser();
+
+            if (user is null)
+            {
+                return BadRequest();
+            }
+
+            if (updateUserDTO.UserName != null)
+            {
+                user.UserName = updateUserDTO.UserName;
+            }
+
+            if (updateUserDTO.Birthdate.HasValue)
+            {
+                user.Birthdate = updateUserDTO.Birthdate.Value;
+            }
+
+            await userManager.UpdateAsync(user);
+
+            return NoContent();
+
+
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace MiniSocialMediaAPI.Utils
         {
             CreateMap<User, UserDTO>().ForMember(
                 dest => dest.GroupIds, opt => opt.MapFrom(src => src.Groups.Select(g => g.Id)));
+            CreateMap<UpdateUserDTO, User>();
 
             CreateMap<Group, GroupDTO>().ForMember(
                 dest => dest.UserIds, opt => opt.MapFrom(src => src.Users.Select(u => u.Id)));

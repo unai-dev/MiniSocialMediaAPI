@@ -19,18 +19,21 @@ namespace MiniSocialMediaAPI.Controllers
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private readonly IUserService userService;
+        private readonly UserManager<User> userManager;
 
-        public GroupController(ApplicationDbContext context, IMapper mapper, IUserService userService )
+        public GroupController(ApplicationDbContext context, IMapper mapper,
+            IUserService userService, UserManager<User> userManager)
         {
             this.context = context;
             this.mapper = mapper;
             this.userService = userService;
+            this.userManager = userManager;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GroupDTO>>> Get()
         {
-            var groups = await context.Groups.ToListAsync();
+            var groups = await context.Groups.Include(u => u.Users).ToListAsync();
             return Ok(mapper.Map<IEnumerable<GroupDTO>>(groups));
         }
 
@@ -92,14 +95,37 @@ namespace MiniSocialMediaAPI.Controllers
             return Ok("Te has unido al grupo");
         }
 
-        [HttpPost("{groupId}/remove")]
-        public async Task<ActionResult> RemoveUserGroup(int groupId)
+        [HttpPost("{groupId}/leave")]
+        public async Task<ActionResult> LeaveGroup(int groupId)
         {
             var user = await userService.GetUser();
 
             if (user is null)
             {
                 return Unauthorized();
+            }
+
+            var group = await context.Groups.FirstOrDefaultAsync(x => x.Id == groupId);
+
+            if (group is null)
+            {
+                return NotFoundMessage();
+            }
+
+            group.Users.Remove(user);
+            await context.SaveChangesAsync();
+
+            return Ok($"Has salido del grupo {group.Name} con exito");
+        }
+
+        [HttpPost("{groupId}/remove/{userId}")]
+        public async Task<ActionResult> RemoveUserGroup(int groupId, string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user is null)
+            {
+                return BadRequest();
             }
 
             var group = await context.Groups.FirstOrDefaultAsync(x => x.Id == groupId);
