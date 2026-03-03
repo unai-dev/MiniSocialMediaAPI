@@ -49,7 +49,14 @@ namespace MiniSocialMediaAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(AddPostDTO addPostDTO)
         {
+            var user = await userService.GetUser();
+            if (user is null)
+            {
+                return BadRequest();
+            }
+
             var post = mapper.Map<Post>(addPostDTO);
+            post.UserId = user.Id;
 
             context.Add(post);
             await context.SaveChangesAsync();

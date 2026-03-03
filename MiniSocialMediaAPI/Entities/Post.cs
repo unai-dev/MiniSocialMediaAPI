@@ -12,6 +12,6 @@ namespace MiniSocialMediaAPI.Entities
         public required string Body { get; set; }
 
         public required string UserId { get; set; }
-        public User? User { get; set; }
+        public User User { get; set; }
     }
 }
