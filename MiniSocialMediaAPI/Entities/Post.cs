@@ -13,5 +13,7 @@ namespace MiniSocialMediaAPI.Entities
 
         public required string UserId { get; set; }
         public User User { get; set; }
+
+        public List<Like> Likes { get; set; } = [];
     }
 }
