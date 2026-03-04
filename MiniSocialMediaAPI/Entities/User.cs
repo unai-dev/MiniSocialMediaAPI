@@ -8,5 +8,6 @@ namespace MiniSocialMediaAPI.Entities
         public List<Group> Groups { get; set; } = [];
         public List<Post> Posts { get; set; } = [];
         public List<Like> Likes { get; set; } = [];
+        public List<Coments> Coments { get; set; } = [];
     }
 }

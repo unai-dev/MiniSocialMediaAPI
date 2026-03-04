@@ -2,19 +2,18 @@
 
 namespace MiniSocialMediaAPI.Entities
 {
-    public class Post
+    public class Coments
     {
         public Guid Id { get; set; }
 
         [Required]
         [MinLength(2)]
-        [MaxLength(600)]
+        [MaxLength(400)]
         public required string Body { get; set; }
 
+        public Guid PostId { get; set; }
+        public Post? Post { get; set; }
         public required string UserId { get; set; }
-        public User User { get; set; }
-
-        public List<Like> Likes { get; set; } = [];
-        public List<Coments> Coments { get; set; } = [];
+        public User? User { get; set; }
     }
 }

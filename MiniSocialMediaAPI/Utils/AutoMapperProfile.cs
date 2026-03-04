@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MiniSocialMediaAPI.DTOs.Coment;
 using MiniSocialMediaAPI.DTOs.Group;
 using MiniSocialMediaAPI.DTOs.Like;
 using MiniSocialMediaAPI.DTOs.Post;
@@ -23,6 +24,9 @@ namespace MiniSocialMediaAPI.Utils
             CreateMap<AddPostDTO, Post>();
 
             CreateMap<Like, LikeDTO>();
+
+            CreateMap<Coments, ComentDTO>();
+            CreateMap<AddComentDTO, Coments>();
         }
     }
 }
