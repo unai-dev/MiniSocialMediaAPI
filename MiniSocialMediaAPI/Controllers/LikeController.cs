@@ -36,7 +36,7 @@ namespace MiniSocialMediaAPI.Controllers
                 return NotFound();
             }
 
-            var likeExists = await context.Likes.AnyAsync(u => u.UserId == user.Id && u.PostId == postId);
+            var likeExists = await context.Likes.AnyAsync(u => u.UserId == user!.Id && u.PostId == postId);
 
             if (likeExists)
             {
@@ -47,7 +47,7 @@ namespace MiniSocialMediaAPI.Controllers
             var like = new Like
             {
                 PostId = post.Id,
-                UserId = user.Id
+                UserId = user!.Id
 
             };
 
@@ -55,6 +55,31 @@ namespace MiniSocialMediaAPI.Controllers
             await context.SaveChangesAsync();
 
             return Ok();
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(Guid postId, Guid id)
+        {
+            var post = await context.Posts.AnyAsync(x => x.Id == postId);
+
+            if (!post)
+            {
+                return NotFound();
+            }
+
+            var like = await context.Likes.Where(l => l.Id == id).ExecuteDeleteAsync();
+
+            if (like == 0)
+            {
+                return BadRequest("Like inexistente");
+            }
+
+            
+
+            return NoContent();
+
+
 
         }
     }
