@@ -61,6 +61,13 @@ namespace MiniSocialMediaAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid postId, Guid id)
         {
+            var user = await userService.GetUser();
+
+            if (user is null)
+            {
+                return BadRequest();
+            }
+
             var post = await context.Posts.AnyAsync(x => x.Id == postId);
 
             if (!post)
@@ -68,19 +75,14 @@ namespace MiniSocialMediaAPI.Controllers
                 return NotFound();
             }
 
-            var like = await context.Likes.Where(l => l.Id == id).ExecuteDeleteAsync();
+            var like = await context.Likes.Where(l => l.Id == id && l.UserId == user.Id).ExecuteDeleteAsync();
 
             if (like == 0)
             {
-                return BadRequest("Like inexistente");
+                return BadRequest("Like inexistente/No autorizado");
             }
 
-            
-
             return NoContent();
-
-
-
         }
     }
 }

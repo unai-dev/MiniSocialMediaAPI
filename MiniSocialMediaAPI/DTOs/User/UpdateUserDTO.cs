@@ -4,5 +4,7 @@
     {
         public string? UserName { get; set; }
         public DateTime? Birthdate { get; set; }
+        public string? Photo { get; set; }
+        public string? Bio { get; set; }
     }
 }

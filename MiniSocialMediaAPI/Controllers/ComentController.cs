@@ -12,7 +12,7 @@ namespace MiniSocialMediaAPI.Controllers
     [ApiController]
     [Route("v1/api/posts/{postId}/coments")]
     [Authorize]
-    public class ComentController: ControllerBase
+    public class ComentController : ControllerBase
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
@@ -35,7 +35,10 @@ namespace MiniSocialMediaAPI.Controllers
                 return NotFound();
             }
 
-            var coments = await context.Coments.Where(x => x.PostId == postId).ToListAsync();
+            var coments = await context.Coments
+                .Where(x => x.PostId == postId)
+                .Include(u => u.User)
+                .ToListAsync();
 
             if (coments is null)
             {
@@ -70,6 +73,28 @@ namespace MiniSocialMediaAPI.Controllers
             await context.SaveChangesAsync();
 
             return Ok(mapper.Map<ComentDTO>(coment));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(Guid postId, Guid id)
+        {
+            var user = await userService.GetUser();
+
+            var post = await context.Posts.AnyAsync(x => x.Id == postId);
+
+            if (!post)
+            {
+                return NotFound();
+            }
+
+            var coment = await context.Coments.Where(x => x.PostId == postId && x.UserId == user.Id).ExecuteDeleteAsync();
+
+            if (coment == 0)
+            {
+                return Forbid("No estas autorizado a borrar el comentario");
+            }
+
+            return NoContent();
         }
 
     }

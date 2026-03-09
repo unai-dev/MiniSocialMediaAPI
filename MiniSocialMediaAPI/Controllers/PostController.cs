@@ -29,14 +29,22 @@ namespace MiniSocialMediaAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> Get()
         {
-            var posts = await context.Posts.Include(u => u.User).ToListAsync();
+            var posts = await context.Posts
+                .Include(l => l.Likes)
+                .Include(u => u.UserId)
+                .Include(c => c.Coments)
+                .ToListAsync();
             return Ok(mapper.Map<IEnumerable<PostDTO>>(posts));
         }
 
         [HttpGet("{id}", Name ="GetPost")]
         public async Task<ActionResult<PostDTO>> Get(Guid id)
         {
-            var post = await context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+            var post = await context.Posts
+                .Include(l => l.Likes)
+                .Include(u => u.UserId)
+                .Include(c => c.Coments)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (post is null)
             {

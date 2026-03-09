@@ -4,10 +4,12 @@ using Microsoft.IdentityModel.Tokens;
 using MiniSocialMediaAPI.Data;
 using MiniSocialMediaAPI.Entities;
 using MiniSocialMediaAPI.Services;
+using MiniSocialMediaAPI.Utils;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSwaggerGen();
 builder.Services.AddDataProtection();
 builder.Services.AddCors(o =>
 {
@@ -18,7 +20,7 @@ builder.Services.AddCors(o =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer("name=DefaultConnection"));
 
 builder.Services.AddIdentityCore<User>()
@@ -55,6 +57,7 @@ builder.Services.AddAuthorization(o =>
 
 var app = builder.Build();
 
+app.UseSwagger();
 app.UseCors();
 app.MapControllers();
 app.Run();

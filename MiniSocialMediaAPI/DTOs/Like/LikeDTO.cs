@@ -4,6 +4,6 @@
     {
         public Guid Id { get; set; }
         public required string UserId { get; set; }
-        public int PostId { get; set; }
+        public Guid PostId { get; set; }
     }
 }
