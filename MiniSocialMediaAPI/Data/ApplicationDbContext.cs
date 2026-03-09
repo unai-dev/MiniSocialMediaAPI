@@ -12,11 +12,16 @@ namespace MiniSocialMediaAPI.Data
 
         }
 
+        // Creacion de tablas
         public DbSet<Group> Groups { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Coments> Coments { get; set; }
 
+        /**
+         * Configuracion para relacionar tablas
+         * 
+         */
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

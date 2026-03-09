@@ -7,9 +7,21 @@ using MiniSocialMediaAPI.Services;
 using MiniSocialMediaAPI.Utils;
 using System.Text;
 
+/**
+ * ==============================================================
+ * ==============================================================
+ * ==============================================================
+ *                          SERVICES AREA
+ * ==============================================================
+ * ==============================================================
+ * ==============================================================
+ */
 var builder = WebApplication.CreateBuilder(args);
 
+// SWAGGER SERVICE
 builder.Services.AddSwaggerGen();
+
+// SECURITY CONFIG
 builder.Services.AddDataProtection();
 builder.Services.AddCors(o =>
 {
@@ -49,12 +61,24 @@ builder.Services.AddAuthentication().AddJwtBearer(o =>
     };
 });
 
+/**
+ * Politicas de autorizacion:
+ * - Admin
+ */
 builder.Services.AddAuthorization(o =>
 {
     o.AddPolicy("admin", p => p.RequireClaim("admin"));
 });
 
-
+/**
+ * ==============================================================
+ * ==============================================================
+ * ==============================================================
+ *                          MIDDLEWARES AREA
+ * ==============================================================
+ * ==============================================================
+ * ==============================================================
+ */
 var app = builder.Build();
 
 app.UseSwagger();
