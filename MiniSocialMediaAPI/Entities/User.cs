@@ -12,5 +12,7 @@ namespace MiniSocialMediaAPI.Entities
         public List<Post> Posts { get; set; } = [];
         public List<Like> Likes { get; set; } = [];
         public List<Coments> Coments { get; set; } = [];
+        public List<Chat> Chats { get; set; } = [];
+        public List<Message> Messages { get; set; } = [];
     }
 }
