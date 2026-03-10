@@ -4,6 +4,7 @@ namespace MiniSocialMediaAPI.DTOs.User
 {
     public class UserDTO
     {
+        public required string Id { get; set; }
         public required string UserName { get; set; }
         public DateTime Birthdate { get; set; }
         public string? Photo { get; set; }

@@ -63,12 +63,12 @@ namespace MiniSocialMediaAPI.Controllers
             return Ok(mapper.Map<ChatDetailDTO>(chat));
         }
 
-        [HttpPost("{user2Id}")]
-        public async Task<ActionResult> Post(string user2Id)
+        [HttpPost("{userName}")]
+        public async Task<ActionResult> Post(string userName)
         {
             var user = await userService.GetUser();
 
-            var userURL = await userManager.FindByIdAsync(user2Id);
+            var userURL = await context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
 
             if (user is null)
             {

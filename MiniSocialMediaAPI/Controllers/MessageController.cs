@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniSocialMediaAPI.Data;
@@ -10,6 +11,7 @@ namespace MiniSocialMediaAPI.Controllers
 {
     [ApiController]
     [Route("v1/api/chats/{chatId}/messages")]
+    [Authorize]
     public class MessageController: ControllerBase
     {
         private readonly ApplicationDbContext context;
