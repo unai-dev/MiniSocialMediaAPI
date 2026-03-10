@@ -34,6 +34,7 @@ namespace MiniSocialMediaAPI.Controllers
                 .Include(u => u.UserId)
                 .Include(c => c.Coments)
                 .ToListAsync();
+
             return Ok(mapper.Map<IEnumerable<PostDTO>>(posts));
         }
 

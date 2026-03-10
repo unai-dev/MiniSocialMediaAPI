@@ -40,11 +40,6 @@ namespace MiniSocialMediaAPI.Controllers
                 .Include(u => u.User)
                 .ToListAsync();
 
-            if (coments is null)
-            {
-                return Ok();
-            }
-
             return Ok(mapper.Map<IEnumerable<ComentDTO>>(coments));
         }
 

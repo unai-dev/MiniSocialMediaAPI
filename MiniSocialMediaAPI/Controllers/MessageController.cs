@@ -28,9 +28,9 @@ namespace MiniSocialMediaAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MessageDTO>>> Get(Guid chatId)
         {
-            var chat = await context.Chats.FirstOrDefaultAsync(x => x.Id == chatId);
+            var chat = await context.Chats.AnyAsync(x => x.Id == chatId);
 
-            if (chat is null)
+            if (!chat)
             {
                 return NotFound("Chat no existente");
             }
