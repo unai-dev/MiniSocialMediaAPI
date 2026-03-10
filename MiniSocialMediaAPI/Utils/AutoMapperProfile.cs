@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MiniSocialMediaAPI.DTOs.ChatMessage;
 using MiniSocialMediaAPI.DTOs.Coment;
 using MiniSocialMediaAPI.DTOs.Group;
 using MiniSocialMediaAPI.DTOs.Like;
@@ -35,6 +36,14 @@ namespace MiniSocialMediaAPI.Utils
             // Coments
             CreateMap<Coments, ComentDTO>();
             CreateMap<AddComentDTO, Coments>();
+
+
+            // Chat & Message
+            CreateMap<Chat, ChatDTO>();
+            CreateMap<Chat, ChatDetailDTO>();
+            CreateMap<AddChatDTO, Chat>();
+
+            CreateMap<Message, MessageDTO>();
         }
     }
 }
